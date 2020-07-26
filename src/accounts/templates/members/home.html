@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="jumbotron mt-3">
+        <h1>{{ profile.get_username }}</h1>
+        <p class="lead">This is your central hub.</p>
+        <a class="btn btn-lg btn-primary" href="/docs/4.5/components/navbar/" role="button">View stuff &raquo;</a>
+    </div>
+{% endblock content %}
