@@ -50,32 +50,49 @@ class Member(models.Model):
     def get_sex(self):
         return self.user.sex
 
-class Church(models.Model):
-    slug = models.SlugField(max_length=200, unique=True, blank=True)
-    name = models.CharField(max_length=150, blank=True)
-    photo = models.ImageField(upload_to='church/photos/%Y/%m/%d/', null=True, blank=True)
-    cleric = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="chruch", on_delete=models.CASCADE, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+class ClericManager(models.Manager):
+    use_for_related_fields = True
+
+
+class Cleric(models.Model):
+    slug = models.SlugField(max_length=80, unique=True, blank=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="cleric", on_delete=models.CASCADE, blank=True)
 
     class Meta:
-        verbose_name = 'church'
-        verbose_name_plural = 'churches'
+        verbose_name = 'cleric'
+        verbose_name_plural = 'clerics'
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            today = datetime.today()
-            title_slugified = slugify(self.name)
-            self.slug = f'{today:%Y%m%d%M%S}-{title_slugified}'
+            self.slug = slugify(self.user.username)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.user.username
+
+    objects = ClericManager()
 
     @property
-    def get_cleric_avatar(self):
-        return f"{settings.MEDIA_URL}{self.cleric.photo}"
+    def get_username(self):
+        return self.user.username
 
     @property
-    def get_cleric_name(self):
-        return self.cleric.name
+    def get_email(self):
+        return self.user.email
+
+    @property
+    def get_avatar(self):
+        return f"{settings.MEDIA_URL}{self.user.photo}"
+
+    @property
+    def get_name(self):
+        return self.user.name
+
+    @property
+    def get_dob(self):
+        return self.user.date_of_birth
+
+    @property
+    def get_sex(self):
+        return self.user.sex
+

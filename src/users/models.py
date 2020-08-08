@@ -7,6 +7,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import AppUserManager
+from direct_messages.models import Channel
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_id/<filename>
@@ -51,3 +52,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+    @property
+    def get_channels(self):
+        return Channel.objects.filter(oid=self.slug)

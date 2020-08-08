@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
+    'rest_framework',
     'pages',
+    'users',
+    'accounts',
+    'fellowships',
+    'direct_messages',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +57,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'faith_base.urls'
+ASGI_APPLICATION = 'love.routing.application'
 
 TEMPLATES = [
     {
@@ -132,12 +139,23 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
 # Custom Django auth settings
-# AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.User'
 
-# LOGIN_URL = 'login'
+LOGIN_URL = 'login'
 
-# LOGOUT_URL = 'logout'
+LOGOUT_URL = 'logout'
 
-# LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'home'
 
-# LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
+
+MESSAGES_TO_LOAD = 15
