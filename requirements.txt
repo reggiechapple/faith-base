@@ -1,5 +1,5 @@
 Django==2.2.13
-Pillow==7.1.2
+Pillow==9.0.1
 simplejson==3.17.0
 djangorestframework==3.11.0
 channels==2.4.0
